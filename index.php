@@ -20,7 +20,6 @@ $db = $pdo->conn();
  * A l'aide d'une boucle, affichez chaque ligne du tableau de résultat.
  */
 
-// TODO Votre code ici.
 $request = $db->prepare("
     SELECT article.id, article.title, article.content , categorie.name
     FROM article
@@ -28,22 +27,43 @@ $request = $db->prepare("
 ");
 
 $request->execute();
-;
+
 foreach ($request->fetchAll() as $item){
-    echo $item['id'] . " | " . $item['title'] . " | " . $item['content'] . " | " . $item['name'] . "<br>";
+    echo $item['id'] . " _ " . $item['title'] . " | " . $item['content'] . " | " . $item['name'] . "<br>";
 }
 
+echo "<br>";
 /**
  * 4. Réalisez la même chose que le point 3 en utilisant un maximum d'alias.
  */
 
-// TODO Votre code ici.
+$request = $db->prepare("
+    SELECT ar.id, ar.title, ar.content, ca.name
+    FROM article as ar
+    INNER JOIN categorie AS ca ON ar.category_fk = ca.id
+");
 
+$request->execute();
+
+foreach ($request->fetchAll() as $item){
+    echo $item['id'] . " _ " . $item['title'] . " | " . $item['content'] . " | " . $item['name'] . "<br>";
+}
 
 /**
  * 5. Ajoutez un utilisateur dans la table utilisateur.
  *    Ajoutez des commentaires et liez un utilisateur au commentaire.
  *    Avec un LEFT JOIN, affichez tous les commentaires et liez le nom et le prénom de l'utilisateur ayant écris le comentaire.
  */
+$request = $db->prepare("
+    SELECT commentaire.content, utilisateur.lastName, utilisateur.firstName
+    FROM commentaire
+    LEFT JOIN utilisateur ON commentaire.user_fk = utilisateur.id
+");
 
-// TODO Votre code ici.
+$request->execute();
+
+echo "<br>";
+
+foreach ($request->fetchAll() as $item){
+    echo $item['content'] . " _ " . $item['lastName'] . " " . $item['firstName'] . "<br>";
+}
